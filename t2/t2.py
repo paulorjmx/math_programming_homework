@@ -3,6 +3,7 @@ from ortools.linear_solver import pywraplp
 from graphviz import Digraph
 import math as m
 
+# Funcao para calcular a aresta de menor custo dado um indice "index"
 def search_min_cost(index, arr, visited, dim):
 	min = 10000000.0
 	node = -1
@@ -25,12 +26,11 @@ def calcula_distancias(cidade, cidades):
 	return distancias
 
 solver = pywraplp.Solver.CreateSolver('SCIP')
-parame = pywraplp.MPSolverParameters
 #solver = pywraplp.Solver('simple_lp_program',
 #                          pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
-solver.set_time_limit(600000)
+solver.set_time_limit(600000) # Configura o tempo limite para 10 segundos
 
-ref_arq = open('../data_points/uruguay.tsp')
+ref_arq = open('../data_points/uruguay.tsp') # Le o arquivo no qual contem as coordenadas das cidades
 
 cidades = []
 
@@ -45,6 +45,7 @@ for i in range(0, len(cidades)):
 	distancia = calcula_distancias(coord, cidades)
 	custos.append(distancia)
 
+# As variaveis abaixo servem para calcular, utilizando abordagem "gulosa", o caminho de menor custo 
 visitado = [False for i in range(0, len(cidades))]
 seq_vis = [-1 for i in range(0, len(cidades))]
 index = 0
@@ -67,7 +68,7 @@ num_cidades = len(custos)
 #dot = Digraph(comment='TSP Galaxies') # Cria o grafo direcionado
 #dot.format = 'jpg' # Muda o formato do arquivo de saida
 
-#for i in range(num_planetas): # Adiciona os nohs ao grafo
+#for i in range(num_cidades): # Adiciona os nohs ao grafo
 #    dot.node(str(i), str(i))
 
 
@@ -80,8 +81,9 @@ for i in range(num_cidades):
 
 
 
-mp_variables = []
-mp_values = []
+# mp_variables = []
+# mp_values = []
+# Forca 92% dos nohs para serem 1 (isso diminui muito o tempo que leva para calcular a rota otima)
 for i in range(0, round(len(seq_vis) * 0.92)):
 	if(seq_vis[i] != -1):
 		x[i, seq_vis[i]] = solver.IntVar(1.0, 1.0, '')
@@ -90,7 +92,7 @@ for i in range(0, round(len(seq_vis) * 0.92)):
 		
 
 
-
+# **********  TESTANDO SetHint e valores forcados *********** #
 # mp_variables = [x[0, 1], x[1, 5], x[5, 9], x[9, 10], x[10, 11], x[11, 12], x[12, 13], x[13, 16], x[16, 17], x[17, 18], x[18, 21], x[21, 22], x[22, 28], x[28, 27]]
 # mp_values = [1.0 , 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 # solver.SetHint(mp_variables, mp_values)
@@ -108,6 +110,7 @@ for i in range(0, round(len(seq_vis) * 0.92)):
 # x[21, 22] = solver.IntVar(1, 1, '')
 # x[22, 28] = solver.IntVar(1, 1, '')
 # x[28, 27] = solver.IntVar(1, 1, '')
+# *********************  FIM TESTANDO ********************* #
 
 y = {}
 for i in range(num_cidades):
