@@ -1,6 +1,7 @@
 from __future__ import print_function
 from ortools.linear_solver import pywraplp
 from graphviz import Digraph
+from py2opt.routefinder import RouteFinder
 import math as m
 
 def calcula_distancias(cidade, cidades):
@@ -22,7 +23,7 @@ parame = pywraplp.MPSolverParameters
 #                          pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
 solver.set_time_limit(600000)
 
-ref_arq = open('../data_points/western_sahara.tsp')
+ref_arq = open('wi29.tsp')
 
 cidades = []
 
@@ -58,8 +59,22 @@ for i in range(num_cidades):
     for j in range(num_cidades):
         x[i, j] = solver.IntVar(0.0, 1.0, '')
 
-mp_variables = [x[0, 1], x[1, 5], x[5, 9], x[9, 10], x[10, 11], x[11, 12], x[12, 13], x[13, 16], x[16, 17], x[17, 18], x[18, 21], x[21, 22], x[22, 28], x[28, 27]]
-mp_values = [1.0 , 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+name = []
+for i in range(0, len(cidades)):
+  name.append(str(cidades[i][0]))
+
+route_finder = RouteFinder(custos, name, iterations=5)
+best_distance, best_route = route_finder.solve()
+
+mp_variable = []
+mp_values = []
+for i in range(0, (len(best_route)-1)):
+  mP_variable.append(x[i, i+1])
+  mp_values.append(1.0)
+
+
+#mp_variables = [x[0, 1], x[1, 5], x[5, 9], x[9, 10], x[10, 11], x[11, 12], x[12, 13], x[13, 16], x[16, 17], x[17, 18], x[18, 21], x[21, 22], x[22, 28], x[28, 27]]
+#mp_values = [1.0 , 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 solver.SetHint(mp_variables, mp_values)
 # x[0, 1] = solver.IntVar(1, 1, '')
 # x[1, 5] = solver.IntVar(1, 1, '')
