@@ -69,13 +69,14 @@ best_distance, best_route = route_finder.solve()
 mp_variables = []
 mp_values = []
 for i in range(0, (len(best_route)-1)):
-  a = int(best_route[i])
-  b = int(best_route[i+1])
+  a = int(best_route[i]) - 1 
+  b = int(best_route[i+1]) - 1
   mp_variables.append(x[a, b])
   mp_values.append(1.0)
 
 aux = int(best_route[-1]) - 1
 mp_variables.append(x[aux, 0])
+mp_values.append(1.0)
 #mp_variables = [x[0, 1], x[1, 5], x[5, 9], x[9, 10], x[10, 11], x[11, 12], x[12, 13], x[13, 16], x[16, 17], x[17, 18], x[18, 21], x[21, 22], x[22, 28], x[28, 27]]
 #mp_values = [1.0 , 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 solver.SetHint(mp_variables, mp_values)
