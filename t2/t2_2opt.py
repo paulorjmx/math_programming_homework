@@ -46,20 +46,21 @@ y = []
 
 for i in range(0, len(best_route)):
   ind = int(best_route[i]) - 1
-  x.append(cidades[ind][1])
-  y.append(cidades[ind][2])
+  x.append(float(cidades[ind][1]))
+  y.append(float(cidades[ind][2]))
 
 coord_x = []
 coord_y = []
 
 for i in cidades:
-  coord_x.append(i[1])
-  coord_y.append(i[2])
+  coord_x.append(float(i[1]))
+  coord_y.append(float(i[2]))
 
-x.append(cidades[0][1])
-y.append(cidades[0][2])
+x.append(float(cidades[0][1]))
+y.append(float(cidades[0][2]))
 
-plt.axis('off')
+#plt.axis('off')
+#plt.axis([20833.3333, 27462.5000, 10383.3333, 17100.0000])
 plt.plot(coord_x, coord_y, 'o', x, y)
 plt.savefig('grafico.png')
 plt.show()
