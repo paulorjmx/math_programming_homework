@@ -13,6 +13,7 @@ def calcula_distancias(cidade, cidades):
 
 from py2opt.routefinder import RouteFinder
 import math as m
+import matplotlib.pyplot as plt
 
 dataset = input()
 ref_arq = open(dataset)
@@ -39,3 +40,26 @@ best_distance, best_route = route_finder.solve()
 
 print(best_distance)
 print(best_route)
+
+x = []
+y = []
+
+for i in range(0, len(best_route)):
+  ind = int(best_route[i]) - 1
+  x.append(cidades[ind][1])
+  y.append(cidades[ind][2])
+
+coord_x = []
+coord_y = []
+
+for i in cidades:
+  coord_x.append(i[1])
+  coord_y.append(i[2])
+
+x.append(cidades[0][1])
+y.append(cidades[0][2])
+
+plt.axis('off')
+plt.plot(coord_x, coord_y, 'o', x, y)
+plt.savefig('grafico.png')
+plt.show()
