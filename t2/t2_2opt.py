@@ -35,11 +35,12 @@ for i in range(0, len(cidades)):
   name.append(str(cidades[i][0]))
 
 route_finder = RouteFinder(custos, name, iterations=5)
-best_distance, best_route, visits = route_finder.solve()
+best_distance, best_route, visits, time = route_finder.solve()
 
 print('distance', best_distance)
 print('visits', visits)
 print(best_route)
+print(time)
 
 x = []
 y = []
@@ -62,5 +63,5 @@ y.append(float(cidades[0][2]))
 #plt.axis('off')
 #plt.axis([20833.3333, 27462.5000, 10383.3333, 17100.0000])
 plt.plot(coord_x, coord_y, 'o', x, y)
-plt.savefig('grafico.png')
+plt.savefig(str(len(cidades)), format = 'png')
 plt.show()

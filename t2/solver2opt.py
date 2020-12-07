@@ -103,6 +103,6 @@ class RouteFinder:
 
         if self.cities_names:
             best_route = [self.cities_names[i] for i in best_route]
-            return best_distance, best_route, nodes_visited
+            return best_distance, best_route, nodes_visited, time.time() - start_time
         else:
-            return best_distance, best_route, nodes_visited
+            return best_distance, best_route, nodes_visited, time.time() - start_time
